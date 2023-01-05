@@ -1,0 +1,20 @@
+.balloon {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border: 1px #666 solid;
+    border-radius: 50% 50% 30% 50%;
+    background: #fa5858;
+    box-shadow: -4px -4px 10px #FFF inset;
+}
+.balloon::after {
+    content: '';
+    position: absolute;
+    border: 6px solid transparent;
+    border-bottom: 8px solid #555;
+    width: 0;
+    height: 0;
+    top: 40px;
+    left: 40px;
+    transform: rotate(-45deg);
+}
