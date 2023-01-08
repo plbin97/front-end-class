@@ -1,42 +1,61 @@
 const balloons = []
-function createBalloon() {
-    const balloon = document.createElement('div')
-    balloon.classList.add('balloon')
-    balloon.style.bottom = '0px'
-    const left = Math.random() * 1000
-    balloon.style.left = left.toString() + 'px'
-    return balloon
-}
+const gameCanvas = document.createElement('div')
+gameCanvas.classList.add('gameCanvas')
+const scoreBoard = document.createElement('div')
+scoreBoard.classList.add('scoreBoard')
+scoreBoard.innerText = '0'
+document.body.append(gameCanvas)
+document.body.append(scoreBoard)
 
-
-
-for (let i = 0; i < 10; i ++) {
-    const balloon = createBalloon()
-    balloons.push(balloon)
-    document.body.append(balloon)
-}
-
-function removeBalloonWhenReachTheTop(balloon) {
-    const currentBottom = getBalloonCurrentBottom(balloon)
-    const parent = balloon.parentNode
-    if (parent) {
-        if (currentBottom >= screen.height) {
-            parent.removeChild(balloon)
+class Balloon {
+    constructor() {
+        this.balloonNode = document.createElement('div')
+        this.balloonNode.classList.add('balloon')
+        this.setBottom(0)
+        this.setRandomLeft()
+        this.setRandomColor()
+        this.speed = Math.ceil(Math.random() * 10)
+        this.balloonNode.onclick = () => {
+            this.setRandomLeft()
+            this.setBottom(0)
+            this.setRandomColor()
+            let currentScore = Number(scoreBoard.innerText)
+            currentScore += this.speed
+            scoreBoard.innerText = `${currentScore}`
+        }
+    }
+    setRandomColor() {
+        this.balloonNode.style.background = `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255})`
+    }
+    setBottom(val) {
+        this.balloonNode.style.bottom = `${val}px`
+    }
+    setRandomLeft() {
+        this.balloonNode.style.left = `${Math.random() * gameCanvas.offsetWidth}px`
+    }
+    getCurrentBottom() {
+        return Number(this.balloonNode.style.bottom.split('px')[0])
+    }
+    lift() {
+        const currentBottom = this.getCurrentBottom()
+        if (currentBottom >= gameCanvas.offsetHeight) {
+            this.setBottom(0)
+        }else {
+            this.setBottom(currentBottom + this.speed)
         }
     }
 }
 
-function getBalloonCurrentBottom(balloon) {
-    return Number(balloon.style.bottom.split('px')[0])
-}
-function liftBalloon() {
-    for (const balloon of balloons) {
-        const currentBottom = getBalloonCurrentBottom(balloon)
-        balloon.style.bottom = (currentBottom + Math.random() * 10).toString() + 'px'
-        removeBalloonWhenReachTheTop(balloon)
-    }
+
+for (let i = 0; i < 10; i ++) {
+    const balloon = new Balloon()
+    gameCanvas.append(balloon.balloonNode)
+    balloons.push(balloon)
 }
 
+
 setInterval(() => {
-    liftBalloon()
+    for (const balloon of balloons) {
+        balloon.lift()
+    }
 }, 20)

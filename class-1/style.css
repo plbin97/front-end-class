@@ -1,10 +1,19 @@
+.gameCanvas {
+    position: absolute;
+    width: 70%;
+    height: 100%;
+}
+.scoreBoard {
+    position: absolute;
+    width: 20%;
+    left: 80%;
+}
 .balloon {
     position: absolute;
     width: 50px;
     height: 50px;
     border: 1px #666 solid;
     border-radius: 50% 50% 30% 50%;
-    background: #fa5858;
     box-shadow: -4px -4px 10px #FFF inset;
 }
 .balloon::after {
