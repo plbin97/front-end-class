@@ -1,0 +1,40 @@
+.gameCanvas {
+    position: absolute;
+    width: 70%;
+    height: 100%;
+}
+.scoreBoard {
+    position: absolute;
+    width: 20%;
+    left: 80%;
+}
+.balloon {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border: 1px #666 solid;
+    border-radius: 50% 50% 30% 50%;
+    box-shadow: -4px -4px 10px #FFF inset;
+    animation-name: lift;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+@keyframes lift {
+    from {
+        bottom: 0;
+    }
+    to {
+        bottom: 100%;
+    }
+}
+.balloon::after {
+    content: '';
+    position: absolute;
+    border: 6px solid transparent;
+    border-bottom: 8px solid #555;
+    width: 0;
+    height: 0;
+    top: 40px;
+    left: 40px;
+    transform: rotate(-45deg);
+}
