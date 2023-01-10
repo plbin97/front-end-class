@@ -6,6 +6,8 @@ scoreBoard.classList.add('scoreBoard')
 scoreBoard.innerText = '0'
 document.body.append(gameCanvas)
 document.body.append(scoreBoard)
+const gameCanvasHeight = gameCanvas.offsetHeight
+const gameCanvasWidth = gameCanvas.offsetWidth
 
 class Balloon {
     constructor() {
@@ -31,14 +33,14 @@ class Balloon {
         this.balloonNode.style.bottom = `${val}px`
     }
     setRandomLeft() {
-        this.balloonNode.style.left = `${Math.random() * gameCanvas.offsetWidth}px`
+        this.balloonNode.style.left = `${Math.random() * gameCanvasWidth}px`
     }
     getCurrentBottom() {
         return Number(this.balloonNode.style.bottom.split('px')[0])
     }
     lift() {
         const currentBottom = this.getCurrentBottom()
-        if (currentBottom >= gameCanvas.offsetHeight) {
+        if (currentBottom >= gameCanvasHeight) {
             this.setBottom(0)
         }else {
             this.setBottom(currentBottom + this.speed)
@@ -46,16 +48,21 @@ class Balloon {
     }
 }
 
-
+const balloonFragment = document.createDocumentFragment()
 for (let i = 0; i < 10; i ++) {
     const balloon = new Balloon()
-    gameCanvas.append(balloon.balloonNode)
+    balloonFragment.append(balloon.balloonNode)
     balloons.push(balloon)
 }
+gameCanvas.append(balloonFragment)
 
-
-setInterval(() => {
+function lifting() {
+    gameCanvas.style.display = 'none'
     for (const balloon of balloons) {
         balloon.lift()
     }
-}, 20)
+    gameCanvas.style.display = 'block'
+    requestAnimationFrame(lifting)
+}
+
+lifting()
